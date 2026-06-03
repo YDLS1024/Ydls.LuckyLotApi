@@ -1,0 +1,109 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "5.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "10.4.0",
+      "isInstalled": true,
+      "creationTime": "05/26/2026 13:50:15 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Ydls.LuckyLotApi.Application": {
+      "path": "src/Ydls.LuckyLotApi.Application/Ydls.LuckyLotApi.Application.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.Application.Tests": {
+      "path": "test/Ydls.LuckyLotApi.Application.Tests/Ydls.LuckyLotApi.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Ydls.LuckyLotApi.Domain.Shared": {
+      "path": "src/Ydls.LuckyLotApi.Domain.Shared/Ydls.LuckyLotApi.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.Application.Contracts": {
+      "path": "src/Ydls.LuckyLotApi.Application.Contracts/Ydls.LuckyLotApi.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.HttpApi": {
+      "path": "src/Ydls.LuckyLotApi.HttpApi/Ydls.LuckyLotApi.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.HttpApi.Client": {
+      "path": "src/Ydls.LuckyLotApi.HttpApi.Client/Ydls.LuckyLotApi.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.EntityFrameworkCore.Tests": {
+      "path": "test/Ydls.LuckyLotApi.EntityFrameworkCore.Tests/Ydls.LuckyLotApi.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Ydls.LuckyLotApi.EntityFrameworkCore": {
+      "path": "src/Ydls.LuckyLotApi.EntityFrameworkCore/Ydls.LuckyLotApi.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.TestBase": {
+      "path": "test/Ydls.LuckyLotApi.TestBase/Ydls.LuckyLotApi.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Ydls.LuckyLotApi.Domain.Tests": {
+      "path": "test/Ydls.LuckyLotApi.Domain.Tests/Ydls.LuckyLotApi.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Ydls.LuckyLotApi.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Ydls.LuckyLotApi.HttpApi.Client.ConsoleTestApp/Ydls.LuckyLotApi.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Ydls.LuckyLotApi.DbMigrator": {
+      "path": "src/Ydls.LuckyLotApi.DbMigrator/Ydls.LuckyLotApi.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.HttpApi.Host": {
+      "path": "src/Ydls.LuckyLotApi.HttpApi.Host/Ydls.LuckyLotApi.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "Ydls.LuckyLotApi.Domain": {
+      "path": "src/Ydls.LuckyLotApi.Domain/Ydls.LuckyLotApi.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

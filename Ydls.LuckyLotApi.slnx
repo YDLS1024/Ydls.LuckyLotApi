@@ -1,0 +1,23 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+    </Configurations>
+    <Folder Name="/src/">
+        <Project Path="src/Ydls.LuckyLotApi.Domain/Ydls.LuckyLotApi.Domain.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.Application/Ydls.LuckyLotApi.Application.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.EntityFrameworkCore/Ydls.LuckyLotApi.EntityFrameworkCore.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.Domain.Shared/Ydls.LuckyLotApi.Domain.Shared.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.Application.Contracts/Ydls.LuckyLotApi.Application.Contracts.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.HttpApi/Ydls.LuckyLotApi.HttpApi.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.HttpApi.Client/Ydls.LuckyLotApi.HttpApi.Client.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.HttpApi.Host/Ydls.LuckyLotApi.HttpApi.Host.csproj" />
+        <Project Path="src/Ydls.LuckyLotApi.DbMigrator/Ydls.LuckyLotApi.DbMigrator.csproj" />
+    </Folder>
+    <Folder Name="/test/">
+        <Project Path="test/Ydls.LuckyLotApi.Application.Tests/Ydls.LuckyLotApi.Application.Tests.csproj" />
+        <Project Path="test/Ydls.LuckyLotApi.EntityFrameworkCore.Tests/Ydls.LuckyLotApi.EntityFrameworkCore.Tests.csproj" />
+        <Project Path="test/Ydls.LuckyLotApi.TestBase/Ydls.LuckyLotApi.TestBase.csproj" />
+        <Project Path="test/Ydls.LuckyLotApi.Domain.Tests/Ydls.LuckyLotApi.Domain.Tests.csproj" />
+        <Project Path="test/Ydls.LuckyLotApi.HttpApi.Client.ConsoleTestApp/Ydls.LuckyLotApi.HttpApi.Client.ConsoleTestApp.csproj" />
+    </Folder>
+</Solution>
