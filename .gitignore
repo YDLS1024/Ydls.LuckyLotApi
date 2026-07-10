@@ -264,6 +264,8 @@ paket-files/
 *.code-workspace
 
 # LuckyLotApi
+Logs/
+**/Logs/
 src/Ydls.LuckyLotApi.Web/Logs/*
 src/Ydls.LuckyLotApi.Web.Host/Logs/*
 src/Ydls.LuckyLotApi.Web.Public/Logs/*
