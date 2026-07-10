@@ -1,0 +1,9 @@
+<Project>
+  <!-- Pin transitive packages with known high severity advisories. -->
+  <ItemGroup>
+    <PackageReference Include="Scriban" Version="7.2.5" />
+    <PackageReference Include="MessagePack" Version="3.1.8" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.50.3" />
+  </ItemGroup>
+</Project>
