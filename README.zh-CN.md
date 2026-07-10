@@ -10,6 +10,10 @@
 
 * [.NET 10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
 * [Node v18 或 v20](https://nodejs.org/en)
+* **PostgreSQL 17**（通过 [Npgsql](https://www.npgsql.org/) + EF Core 访问；推荐 Docker 镜像 `postgres:17`，开发环境已验证 **17.x**）
+  * 默认数据库名：`LuckyLotApi`
+  * 默认端口：`5432`
+  * 须先创建数据库，再运行 `DbMigrator` 应用迁移与种子数据
 
 ### 配置说明
 

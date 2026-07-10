@@ -10,6 +10,10 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
 
 * [.NET10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
 * [Node v18 or 20](https://nodejs.org/en)
+* **PostgreSQL 17** (via [Npgsql](https://www.npgsql.org/) + EF Core; recommended Docker image `postgres:17`, verified on **17.x** in development)
+  * Default database name: `LuckyLotApi`
+  * Default port: `5432`
+  * Create the database first, then run `DbMigrator` to apply migrations and seed data
 
 ### Configurations
 
