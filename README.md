@@ -1,121 +1,118 @@
 # Ydls.LuckyLotApi
 
-## About this solution
+**语言 / Languages**：[简体中文](README.md) · [English](README.en.md)
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+## 关于本解决方案
 
-### Pre-requirements
+本项目是基于[领域驱动设计（DDD）](https://abp.io/docs/latest/framework/architecture/domain-driven-design)的分层启动解决方案，已集成 ABP 框架核心模块。更多信息请参阅 [分层 Web 应用启动模板](https://abp.io/docs/latest/solution-templates/layered-web-application)文档。
 
-* [.NET10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+### 环境要求
 
-### Configurations
+* [.NET 10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
+* [Node v18 或 v20](https://nodejs.org/en)
 
-The solution ships with placeholder values in `appsettings.json` (for example `REPLACE_ME_IN_APPSETTINGS_SECRETS_JSON`). **Never commit real passwords or passphrases to source control.**
+### 配置说明
 
-For local development, store secrets with [.NET User Secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets). Values are kept outside the repo (under your user profile) and override `appsettings.json` when the environment is `Development`.
+解决方案在 `appsettings.json` 中使用占位符（例如 `REPLACE_ME_IN_APPSETTINGS_SECRETS_JSON`）。**切勿将真实密码或口令提交到版本库。**
+
+本地开发请使用 [.NET User Secrets](https://learn.microsoft.com/zh-cn/aspnet/core/security/app-secrets) 保存机密。机密存储在用户目录下，不会进入仓库；在 `Development` 环境下会覆盖 `appsettings.json` 中的同名配置。
 
 #### HttpApi.Host
 
-Run once per machine to register a `UserSecretsId` for the host project:
+每台机器只需执行一次，为 Host 项目注册 `UserSecretsId`：
 
 ```bash
 cd src/Ydls.LuckyLotApi.HttpApi.Host
 dotnet user-secrets init
 ```
 
-Set the connection string and other secrets (use `:` for nested JSON keys):
+设置连接字符串及其他机密（嵌套 JSON 键使用 `:` 分隔）：
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Port=5432;Database=LuckyLotApi;User ID=ydls;Password=<your-db-password>;"
-dotnet user-secrets set "AuthServer:CertificatePassPhrase" "<your-openiddict-pfx-passphrase>"
-dotnet user-secrets set "StringEncryption:DefaultPassPhrase" "<your-string-encryption-passphrase>"
+dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Port=5432;Database=LuckyLotApi;User ID=ydls;Password=<你的数据库密码>;"
+dotnet user-secrets set "AuthServer:CertificatePassPhrase" "<openiddict.pfx-口令>"
+dotnet user-secrets set "StringEncryption:DefaultPassPhrase" "<字符串加密口令>"
 ```
 
-Useful commands:
+常用命令：
 
 ```bash
-dotnet user-secrets list    # show keys (values are masked in recent SDKs)
+dotnet user-secrets list    # 查看已配置的键（新版 SDK 会屏蔽值）
 dotnet user-secrets remove "ConnectionStrings:Default"
-dotnet user-secrets clear   # remove all secrets for this project
+dotnet user-secrets clear   # 清除本项目的全部机密
 ```
 
-Then run the API:
+启动 API：
 
 ```bash
 dotnet run --project src/Ydls.LuckyLotApi.HttpApi.Host
 ```
 
-`WebApplication.CreateBuilder` loads user secrets automatically in `Development` after `dotnet user-secrets init`. The host also calls `AddAppSettingsSecretsJson()`, which optionally loads a gitignored `appsettings.secrets.json` in the project folder—user secrets and that file are alternatives; you only need one.
+执行 `dotnet user-secrets init` 后，`WebApplication.CreateBuilder` 会在 `Development` 环境下自动加载 user secrets。Host 还调用了 `AddAppSettingsSecretsJson()`，可额外加载项目目录下 gitignored 的 `appsettings.secrets.json`——user secrets 与该文件二选一即可。
 
 #### DbMigrator
 
-The migrator needs the same database connection string. Initialize and set secrets in its project directory:
+数据库迁移工具需要相同的连接字符串。在其项目目录中初始化并设置机密：
 
 ```bash
 cd src/Ydls.LuckyLotApi.DbMigrator
 dotnet user-secrets init
-dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Port=5432;Database=LuckyLotApi;User ID=ydls;Password=<your-db-password>;"
+dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Port=5432;Database=LuckyLotApi;User ID=ydls;Password=<你的数据库密码>;"
 ```
 
-Apply migrations and seed data:
+执行迁移并种子数据：
 
 ```bash
 dotnet run --project src/Ydls.LuckyLotApi.DbMigrator
 ```
 
-#### Production and CI
+#### 生产环境与 CI
 
-Do **not** use user secrets in production. Provide configuration via environment variables, Docker `--env-file`, or the paths described in `Jenkinsfile` (`REMOTE_API_ENV_FILE`, `REMOTE_MIGRATOR_ENV_FILE`). Use the same key names as above (for example `ConnectionStrings__Default` with double underscores for environment variables).
+生产环境**不要**使用 user secrets。请通过环境变量、Docker `--env-file`，或 `Jenkinsfile` 中描述的路径（`REMOTE_API_ENV_FILE`、`REMOTE_MIGRATOR_ENV_FILE`）提供配置。键名与上文相同；环境变量中使用双下划线，例如 `ConnectionStrings__Default`。
 
-### Before running the application
+### 运行前准备
 
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `Ydls.LuckyLotApi.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+* 在解决方案根目录执行 `abp install-libs`，安装前端依赖。首次克隆仓库或新增客户端包后需手动执行。
+* 运行 `Ydls.LuckyLotApi.DbMigrator` 创建初始数据库。首次运行必须执行；后续新增 EF Core 迁移后也需再次运行。
 
-#### Generating a Signing Certificate
+#### 生成签名证书
 
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
+生产环境需使用正式签名证书。ABP 会在应用中配置签名与加密证书，并期望存在 `openiddict.pfx` 文件。
 
-To generate a signing certificate, you can use the following command:
+生成签名证书：
 
 ```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p <passphrase>
+dotnet dev-certs https -v -ep openiddict.pfx -p <口令>
 ```
 
-> `<passphrase>` is the password of the certificate, you can change it to any password you want. The chosen passphrase must match `AuthServer:CertificatePassPhrase` in your local user secrets (see **Configurations** above) or environment configuration—not the placeholder in `appsettings.json`.
+> `<口令>` 为证书密码，可自定义。该口令须与本地 user secrets 中的 `AuthServer:CertificatePassPhrase`（见上文**配置说明**）或环境配置一致，而非 `appsettings.json` 中的占位符。
 
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
+建议为加密与签名各使用一张 RSA 证书，且与 HTTPS 证书分开。
 
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
+更多信息：[OpenIddict 证书配置](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
 
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
+> 另请参阅 ABP [配置 OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) 文档。
 
-### Solution structure
+### 解决方案结构
 
-This is a layered monolith application that consists of the following applications:
+分层单体应用，包含以下可执行项目：
 
-* `Ydls.LuckyLotApi.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-* `Ydls.LuckyLotApi.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
+* `Ydls.LuckyLotApi.DbMigrator`：控制台应用，执行数据库迁移并种子初始数据；开发与生产均可使用。
+* `Ydls.LuckyLotApi.HttpApi.Host`：ASP.NET Core API 宿主，对外暴露接口。
 
-#### Test Projects
+#### 测试项目
 
-The `test` folder contains the following test projects:
+`test` 目录包含：
 
-* `Ydls.LuckyLotApi.Application.Tests`: Application layer tests.
-* `Ydls.LuckyLotApi.Domain.Tests`: Domain layer tests.
-* `Ydls.LuckyLotApi.EntityFrameworkCore.Tests`: Entity Framework Core integration tests.
+* `Ydls.LuckyLotApi.Application.Tests`：应用层测试
+* `Ydls.LuckyLotApi.Domain.Tests`：领域层测试
+* `Ydls.LuckyLotApi.EntityFrameworkCore.Tests`：EF Core 集成测试
 
+## 部署
 
+ABP 应用部署方式与普通 .NET / ASP.NET Core 应用相同。详见 ABP [部署文档](https://abp.io/docs/latest/Deployment/Index)。
 
+### 延伸阅读
 
-## Deploying the application
-
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
-
-### Additional resources
-
-You can see the following resources to learn more about your solution and the ABP Framework:
-
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-* [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
+* [Web 应用开发教程](https://abp.io/docs/latest/tutorials/book-store/part-1)
+* [应用启动模板](https://abp.io/docs/latest/startup-templates/application/index)
