@@ -15,13 +15,16 @@ public class NumberThreeAppService : LuckyLotApiAppService, INumberThreeAppServi
 {
     private readonly IRepository<NumberThree, Guid> _repository;
     private readonly NumberThreeMapper _mapper;
+    private readonly KillNumberEvaluationService _evaluationService;
 
     public NumberThreeAppService(
         IRepository<NumberThree, Guid> repository,
-        NumberThreeMapper mapper)
+        NumberThreeMapper mapper,
+        KillNumberEvaluationService evaluationService)
     {
         _repository = repository;
         _mapper = mapper;
+        _evaluationService = evaluationService;
     }
 
     [AllowAnonymous]
@@ -65,6 +68,10 @@ public class NumberThreeAppService : LuckyLotApiAppService, INumberThreeAppServi
 
         var entity = _mapper.MapToEntity(input);
         entity = await _repository.InsertAsync(entity, autoSave: true);
+
+        await _evaluationService.EvaluateForDrawAsync(
+            entity.OpenDate, entity.One, entity.Two, entity.Three);
+
         return _mapper.MapToDto(entity);
     }
 
@@ -74,15 +81,29 @@ public class NumberThreeAppService : LuckyLotApiAppService, INumberThreeAppServi
         ValidateDigits(input.One, input.Two, input.Three);
 
         var entity = await _repository.GetAsync(id);
+        var previousDate = entity.OpenDate;
+
         _mapper.Map(input, entity);
         entity = await _repository.UpdateAsync(entity, autoSave: true);
+
+        if (previousDate.Date != entity.OpenDate.Date)
+        {
+            await _evaluationService.ClearEvaluationForDateAsync(previousDate);
+        }
+
+        await _evaluationService.EvaluateForDrawAsync(
+            entity.OpenDate, entity.One, entity.Two, entity.Three);
+
         return _mapper.MapToDto(entity);
     }
 
     [Authorize(LuckyLotApiPermissions.NumberThree.Delete)]
     public async Task DeleteAsync(Guid id)
     {
-        await _repository.DeleteAsync(id);
+        var entity = await _repository.GetAsync(id);
+        var openDate = entity.OpenDate;
+        await _repository.DeleteAsync(entity, autoSave: true);
+        await _evaluationService.ClearEvaluationForDateAsync(openDate);
     }
 
     private static void ValidateDigits(params short[] digits)

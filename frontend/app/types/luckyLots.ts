@@ -31,7 +31,6 @@ export interface ExpertsDto {
 
 export interface CreateExpertsDto {
   nickname: string
-  winningRate?: number | null
 }
 
 export interface UpdateExpertsDto extends CreateExpertsDto {}
@@ -48,7 +47,6 @@ export interface KillNumbersDto {
 export interface CreateKillNumbersDto {
   killDate: string
   killNumber: number[]
-  isTrue?: boolean | null
   expertId: string
 }
 

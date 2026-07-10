@@ -50,9 +50,9 @@ export function useLuckyLotsApi() {
   }
 
   const experts = {
-    list: (skipCount = 0, maxResultCount = 50, filter?: string) =>
+    list: (skipCount = 0, maxResultCount = 50, filter?: string, sorting = 'WinningRate DESC') =>
       request<PagedResultDto<ExpertsDto>>(
-        `/api/app/experts${toQuery({ skipCount, maxResultCount, filter })}`,
+        `/api/app/experts${toQuery({ skipCount, maxResultCount, filter, sorting })}`,
         { auth: false }
       ),
     get: (id: string) =>
@@ -78,10 +78,19 @@ export function useLuckyLotsApi() {
       skipCount = 0,
       maxResultCount = 50,
       expertId?: string,
-      sorting = 'KillDate DESC'
+      sorting = 'KillDate DESC',
+      killDateMin?: string,
+      killDateMax?: string
     ) =>
       request<PagedResultDto<KillNumbersDto>>(
-        `/api/app/kill-numbers${toQuery({ skipCount, maxResultCount, expertId, sorting })}`,
+        `/api/app/kill-numbers${toQuery({
+          skipCount,
+          maxResultCount,
+          expertId,
+          sorting,
+          killDateMin,
+          killDateMax
+        })}`,
         { auth: false }
       ),
     get: (id: string) =>

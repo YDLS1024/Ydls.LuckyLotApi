@@ -6,7 +6,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 const api = useLuckyLotsApi()
 const toast = useToast()
 
-const form = reactive({ nickname: '', winningRate: null as number | null })
+const form = reactive({ nickname: '' })
 const editingId = ref<string | null>(null)
 const loading = ref(false)
 
@@ -17,19 +17,17 @@ const { data, refresh, pending } = await useAsyncData('admin-experts', () =>
 function resetForm() {
   editingId.value = null
   form.nickname = ''
-  form.winningRate = null
 }
 
 function editRow(row: ExpertsDto) {
   editingId.value = row.id
   form.nickname = row.nickname
-  form.winningRate = row.winningRate ?? null
 }
 
 async function submit() {
   loading.value = true
   try {
-    const payload = { nickname: form.nickname, winningRate: form.winningRate }
+    const payload = { nickname: form.nickname }
     if (editingId.value) {
       await api.experts.update(editingId.value, payload)
       toast.add({ title: '已更新专家' })
@@ -56,6 +54,9 @@ async function removeRow(id: string) {
 <template>
   <div class="space-y-8">
     <h1 class="text-2xl font-bold">专家管理</h1>
+    <p class="text-sm text-slate-500">
+      胜率由开奖后自动统计：杀号与开奖号码无交集（全正确）计入命中。
+    </p>
 
     <UCard>
       <template #header>{{ editingId ? '编辑专家' : '新增专家' }}</template>
@@ -63,10 +64,7 @@ async function removeRow(id: string) {
         <UFormField label="昵称">
           <UInput v-model="form.nickname" required />
         </UFormField>
-        <UFormField label="胜率 (%)">
-          <UInput v-model.number="form.winningRate" type="number" min="0" max="100" step="0.1" />
-        </UFormField>
-        <div class="flex items-end gap-2">
+        <div class="flex items-end gap-2 md:col-span-2">
           <UButton type="submit" :loading="loading">{{ editingId ? '保存' : '添加' }}</UButton>
           <UButton v-if="editingId" variant="ghost" @click="resetForm">取消</UButton>
         </div>
@@ -82,7 +80,9 @@ async function removeRow(id: string) {
       >
         <div>
           <p class="font-medium">{{ row.nickname }}</p>
-          <p class="text-sm text-slate-500">胜率 {{ row.winningRate ?? '-' }}%</p>
+          <p class="text-sm text-slate-500">
+            胜率 {{ row.winningRate?.toFixed(1) ?? '-' }}% · 命中 {{ row.hitCount }}/{{ row.killCount }}
+          </p>
         </div>
         <div class="flex gap-2">
           <UButton size="xs" variant="ghost" @click="editRow(row)">编辑</UButton>

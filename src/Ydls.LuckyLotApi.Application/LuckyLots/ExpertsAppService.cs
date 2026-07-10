@@ -44,7 +44,7 @@ public class ExpertsAppService : LuckyLotApiAppService, IExpertsAppService
             queryable = queryable.Where(x => x.Nickname.Contains(input.Filter));
         }
 
-        var sorting = string.IsNullOrWhiteSpace(input.Sorting) ? "Nickname" : input.Sorting;
+        var sorting = string.IsNullOrWhiteSpace(input.Sorting) ? "WinningRate DESC" : input.Sorting;
         queryable = queryable.OrderBy(sorting);
 
         var totalCount = await AsyncExecuter.CountAsync(queryable);
@@ -64,6 +64,8 @@ public class ExpertsAppService : LuckyLotApiAppService, IExpertsAppService
     public async Task<ExpertsDto> CreateAsync(CreateExpertsDto input)
     {
         var entity = _mapper.MapToEntity(input);
+        // Winning rate is calculated from settled kill results, not client input.
+        entity.WinningRate = null;
         entity.KillNumbers = new List<KillNumbers>();
         entity = await _repository.InsertAsync(entity, autoSave: true);
         return await MapToDtoWithStatsAsync(entity);
@@ -73,7 +75,10 @@ public class ExpertsAppService : LuckyLotApiAppService, IExpertsAppService
     public async Task<ExpertsDto> UpdateAsync(Guid id, UpdateExpertsDto input)
     {
         var entity = await _repository.GetAsync(id);
+        var previousWinningRate = entity.WinningRate;
         _mapper.Map(input, entity);
+        // Keep auto-calculated winning rate; ignore client-supplied value.
+        entity.WinningRate = previousWinningRate;
         entity = await _repository.UpdateAsync(entity, autoSave: true);
         return await MapToDtoWithStatsAsync(entity);
     }
@@ -89,8 +94,9 @@ public class ExpertsAppService : LuckyLotApiAppService, IExpertsAppService
         var dto = _mapper.MapToDto(entity);
         var killQueryable = await _killNumbersRepository.GetQueryableAsync();
         var kills = await AsyncExecuter.ToListAsync(killQueryable.Where(x => x.ExpertId == entity.Id));
-        dto.KillCount = kills.Count;
-        dto.HitCount = kills.Count(x => x.IsTrue == true);
+        var settled = kills.Where(x => x.IsTrue.HasValue).ToList();
+        dto.KillCount = settled.Count;
+        dto.HitCount = settled.Count(x => x.IsTrue == true);
         return dto;
     }
 }

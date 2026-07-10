@@ -16,15 +16,18 @@ public class KillNumbersAppService : LuckyLotApiAppService, IKillNumbersAppServi
     private readonly IRepository<KillNumbers, Guid> _repository;
     private readonly IRepository<Experts, Guid> _expertsRepository;
     private readonly KillNumbersMapper _mapper;
+    private readonly KillNumberEvaluationService _evaluationService;
 
     public KillNumbersAppService(
         IRepository<KillNumbers, Guid> repository,
         IRepository<Experts, Guid> expertsRepository,
-        KillNumbersMapper mapper)
+        KillNumbersMapper mapper,
+        KillNumberEvaluationService evaluationService)
     {
         _repository = repository;
         _expertsRepository = expertsRepository;
         _mapper = mapper;
+        _evaluationService = evaluationService;
     }
 
     [AllowAnonymous]
@@ -77,7 +80,12 @@ public class KillNumbersAppService : LuckyLotApiAppService, IKillNumbersAppServi
         await _expertsRepository.GetAsync(input.ExpertId);
 
         var entity = _mapper.MapToEntity(input);
+        // Hit status is derived from draws, not client input.
+        entity.IsTrue = null;
+        await _evaluationService.EvaluateKillEntryIfDrawExistsAsync(entity);
         entity = await _repository.InsertAsync(entity, autoSave: true);
+        await _evaluationService.RecalculateWinningRateAsync(entity.ExpertId);
+
         return await MapToDtoAsync(await FindWithExpertAsync(entity.Id));
     }
 
@@ -88,15 +96,28 @@ public class KillNumbersAppService : LuckyLotApiAppService, IKillNumbersAppServi
         await _expertsRepository.GetAsync(input.ExpertId);
 
         var entity = await _repository.GetAsync(id);
+        var previousExpertId = entity.ExpertId;
+
         _mapper.Map(input, entity);
+        await _evaluationService.EvaluateKillEntryIfDrawExistsAsync(entity);
         entity = await _repository.UpdateAsync(entity, autoSave: true);
+
+        await _evaluationService.RecalculateWinningRateAsync(entity.ExpertId);
+        if (previousExpertId != entity.ExpertId)
+        {
+            await _evaluationService.RecalculateWinningRateAsync(previousExpertId);
+        }
+
         return await MapToDtoAsync(await FindWithExpertAsync(entity.Id));
     }
 
     [Authorize(LuckyLotApiPermissions.KillNumbers.Delete)]
     public async Task DeleteAsync(Guid id)
     {
-        await _repository.DeleteAsync(id);
+        var entity = await _repository.GetAsync(id);
+        var expertId = entity.ExpertId;
+        await _repository.DeleteAsync(entity, autoSave: true);
+        await _evaluationService.RecalculateWinningRateAsync(expertId);
     }
 
     private async Task<KillNumbers> FindWithExpertAsync(Guid id)

@@ -11,8 +11,7 @@ const digits = Array.from({ length: 10 }, (_, i) => i)
 const form = reactive({
   killDate: new Date().toISOString().slice(0, 10),
   expertId: '',
-  selected: [] as number[],
-  isTrue: null as boolean | null
+  selected: [] as number[]
 })
 
 const editingId = ref<string | null>(null)
@@ -41,7 +40,6 @@ function resetForm() {
   form.killDate = new Date().toISOString().slice(0, 10)
   form.expertId = expertOptions.value[0]?.value ?? ''
   form.selected = []
-  form.isTrue = null
 }
 
 watch(expertOptions, (opts) => {
@@ -55,7 +53,12 @@ function editRow(row: KillNumbersDto) {
   form.killDate = row.killDate.slice(0, 10)
   form.expertId = row.expertId
   form.selected = [...row.killNumber]
-  form.isTrue = row.isTrue ?? null
+}
+
+function statusLabel(isTrue: boolean | null | undefined) {
+  if (isTrue === true) return '全正确'
+  if (isTrue === false) return '未中'
+  return '待开奖'
 }
 
 async function submit() {
@@ -68,8 +71,7 @@ async function submit() {
     const payload = {
       killDate: new Date(form.killDate).toISOString(),
       expertId: form.expertId,
-      killNumber: [...form.selected].sort((a, b) => a - b),
-      isTrue: form.isTrue
+      killNumber: [...form.selected].sort((a, b) => a - b)
     }
     if (editingId.value) {
       await api.killNumbers.update(editingId.value, payload)
@@ -97,26 +99,19 @@ async function removeRow(id: string) {
 <template>
   <div class="space-y-8">
     <h1 class="text-2xl font-bold">杀号管理</h1>
+    <p class="text-sm text-slate-500">
+      命中状态在录入对应日期开奖后自动判定（杀号与开奖号码无交集即为全正确）。
+    </p>
 
     <UCard>
       <template #header>{{ editingId ? '编辑杀号' : '新增杀号' }}</template>
       <form class="space-y-4" @submit.prevent="submit">
-        <div class="grid gap-4 md:grid-cols-3">
+        <div class="grid gap-4 md:grid-cols-2">
           <UFormField label="日期">
             <UInput v-model="form.killDate" type="date" />
           </UFormField>
           <UFormField label="专家">
             <USelect v-model="form.expertId" :items="expertOptions" />
-          </UFormField>
-          <UFormField label="是否命中">
-            <USelect
-              v-model="form.isTrue"
-              :items="[
-                { label: '待开奖', value: null },
-                { label: '命中', value: true },
-                { label: '未中', value: false }
-              ]"
-            />
           </UFormField>
         </div>
         <div>
@@ -155,7 +150,9 @@ async function removeRow(id: string) {
         <div class="mb-2 flex items-center justify-between">
           <div>
             <p class="font-medium">{{ row.expertNickname }}</p>
-            <p class="text-sm text-slate-500">{{ new Date(row.killDate).toLocaleDateString('zh-CN') }}</p>
+            <p class="text-sm text-slate-500">
+              {{ new Date(row.killDate).toLocaleDateString('zh-CN') }} · {{ statusLabel(row.isTrue) }}
+            </p>
           </div>
           <div class="flex gap-2">
             <UButton size="xs" variant="ghost" @click="editRow(row)">编辑</UButton>

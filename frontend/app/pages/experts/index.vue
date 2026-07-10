@@ -22,7 +22,7 @@ const { data: experts, pending } = await useAsyncData('experts-list', () =>
           胜率 {{ expert.winningRate?.toFixed(1) ?? '-' }}%
         </p>
         <p class="mt-1 text-sm text-slate-500">
-          杀号 {{ expert.killCount }} 期 · 命中 {{ expert.hitCount }} 期
+          已结算 {{ expert.killCount }} 期 · 全正确 {{ expert.hitCount }} 期
         </p>
       </NuxtLink>
     </div>
