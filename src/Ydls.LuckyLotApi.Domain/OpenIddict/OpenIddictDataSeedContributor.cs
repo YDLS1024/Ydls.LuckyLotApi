@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using OpenIddict.Abstractions;
@@ -80,8 +81,12 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                     "Impersonation"
                 },
                 scopes: commonScopes,
-                redirectUris: new List<string> { appClientRootUrl },
-                postLogoutRedirectUris: new List<string> { appClientRootUrl },
+                redirectUris: new List<string>
+                {
+                    appClientRootUrl,
+                    $"{appClientRootUrl}/auth/callback"
+                }.Where(x => !x.IsNullOrWhiteSpace()).ToList()!,
+                postLogoutRedirectUris: new List<string> { appClientRootUrl }.Where(x => !x.IsNullOrWhiteSpace()).ToList()!,
                 clientUri: appClientRootUrl,
                 logoUri: "/images/clients/angular.svg"
             );

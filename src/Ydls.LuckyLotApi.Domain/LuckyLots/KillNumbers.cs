@@ -9,8 +9,10 @@ namespace Ydls.LuckyLotApi.LuckyLots
 
         public short[] KillNumber { get; set; }
 
-        public bool? IsTrue { get; set; }
+    public bool? IsTrue { get; set; }
 
-        public Experts Expert { get; set; }
-    }
+    public Guid ExpertId { get; set; }
+
+    public Experts Expert { get; set; }
+}
 }

@@ -106,6 +106,7 @@ public class LuckyLotApiDbContext :
         {
             b.ToTable(LuckyLotApiConsts.DbTablePrefix + nameof(Experts), LuckyLotApiConsts.DbSchema);
             b.ConfigureByConvention();
+            b.Property(x => x.Nickname).IsRequired().HasMaxLength(LuckyLotsConsts.MaxNicknameLength);
         });
 
 

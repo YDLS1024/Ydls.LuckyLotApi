@@ -4,6 +4,19 @@
     "AppName": "LuckyLotApi",
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
-    "Welcome": "Welcome"
+    "Welcome": "Welcome",
+    "Permission:LuckyLotApi": "Lucky Lot",
+    "Permission:NumberThree": "Number Three draws",
+    "Permission:NumberThree.Create": "Create draw",
+    "Permission:NumberThree.Edit": "Edit draw",
+    "Permission:NumberThree.Delete": "Delete draw",
+    "Permission:Experts": "Experts",
+    "Permission:Experts.Create": "Create expert",
+    "Permission:Experts.Edit": "Edit expert",
+    "Permission:Experts.Delete": "Delete expert",
+    "Permission:KillNumbers": "Kill numbers",
+    "Permission:KillNumbers.Create": "Create kill numbers",
+    "Permission:KillNumbers.Edit": "Edit kill numbers",
+    "Permission:KillNumbers.Delete": "Delete kill numbers"
   }
 }

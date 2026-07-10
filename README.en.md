@@ -99,6 +99,30 @@ This is a layered monolith application that consists of the following applicatio
 
 * `Ydls.LuckyLotApi.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
 * `Ydls.LuckyLotApi.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
+* `frontend/`: Nuxt 4 website for PL3 draw and kill-number display (public + admin).
+
+#### Frontend (`frontend/`)
+
+Website for China Sports Lottery Arrangement 3 draws and expert kill numbers. Public pages are anonymous; admin CRUD requires OpenIddict login.
+
+```bash
+# 1. Start the API (separate terminal)
+dotnet run --project src/Ydls.LuckyLotApi.HttpApi.Host
+
+# 2. Start the frontend
+cd frontend
+npm install
+npm run dev    # http://localhost:3000
+```
+
+Regenerate the TypeScript API client from Swagger (API must be running):
+
+```bash
+cd frontend
+npm run generate:api
+```
+
+See [frontend/README.md](frontend/README.md).
 
 #### Test Projects
 

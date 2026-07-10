@@ -37,6 +37,22 @@
     "Unspecified": "System",
     "SeeAllUsers": "查看所有用户",
     "TakePhoto": "拍摄照片",
-    "ChoosePhoto": "选择照片"
+    "ChoosePhoto": "选择照片",
+    "Permission:LuckyLotApi": "幸运彩票",
+    "Permission:NumberThree": "排列3开奖",
+    "Permission:NumberThree.Create": "创建开奖",
+    "Permission:NumberThree.Edit": "编辑开奖",
+    "Permission:NumberThree.Delete": "删除开奖",
+    "Permission:Experts": "专家",
+    "Permission:Experts.Create": "创建专家",
+    "Permission:Experts.Edit": "编辑专家",
+    "Permission:Experts.Delete": "删除专家",
+    "Permission:KillNumbers": "杀号",
+    "Permission:KillNumbers.Create": "创建杀号",
+    "Permission:KillNumbers.Edit": "编辑杀号",
+    "Permission:KillNumbers.Delete": "删除杀号",
+    "LuckyLotApi:InvalidLotteryDigit": "彩票号码必须在 0-9 之间。",
+    "LuckyLotApi:InvalidKillNumberCount": "杀号数量无效。",
+    "LuckyLotApi:DuplicateKillNumbers": "杀号不能包含重复数字。"
   }
 }

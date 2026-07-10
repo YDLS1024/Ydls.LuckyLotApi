@@ -99,6 +99,30 @@ dotnet dev-certs https -v -ep openiddict.pfx -p <口令>
 
 * `Ydls.LuckyLotApi.DbMigrator`：控制台应用，执行数据库迁移并种子初始数据；开发与生产均可使用。
 * `Ydls.LuckyLotApi.HttpApi.Host`：ASP.NET Core API 宿主，对外暴露接口。
+* `frontend/`：Nuxt 4 排列3杀号展示网站（公开浏览 + 管理后台）。
+
+#### 前端（frontend/）
+
+中国体育彩票排列3开奖与杀号信息展示站点。公开页无需登录；管理后台通过 OpenIddict 登录录入数据。
+
+```bash
+# 1. 启动后端 API（另开终端）
+dotnet run --project src/Ydls.LuckyLotApi.HttpApi.Host
+
+# 2. 启动前端
+cd frontend
+npm install
+npm run dev    # http://localhost:3000
+```
+
+从 Swagger 自动生成 TypeScript 客户端（需 API 已运行）：
+
+```bash
+cd frontend
+npm run generate:api
+```
+
+详见 [frontend/README.md](frontend/README.md)。
 
 #### 测试项目
 

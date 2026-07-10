@@ -1,0 +1,32 @@
+{
+  "name": "frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "generate:api": "openapi-ts",
+    "prebuild": "npm run generate:api || echo Skipped OpenAPI codegen - ensure API is running",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.114",
+    "@iconify-json/simple-icons": "^1.2.87",
+    "@nuxt/ui": "^4.9.0",
+    "@pinia/nuxt": "^0.11.3",
+    "nuxt": "^4.4.8",
+    "openapi-fetch": "^0.17.0",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.97.3",
+    "@nuxt/eslint": "^1.16.0",
+    "eslint": "^10.6.0",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.5"
+  },
+  "packageManager": "pnpm@11.9.0"
+}
