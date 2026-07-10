@@ -23,6 +23,7 @@ using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.Libs;
 using Volo.Abp.Autofac;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -117,6 +118,11 @@ public class LuckyLotApiHttpApiHostModule : AbpModule
             context.Services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
         }
+
+        Configure<AbpMvcLibsOptions>(options =>
+        {
+            options.CheckLibs = false;
+        });
 
         ConfigureStudio(hostingEnvironment);
         ConfigureAuthentication(context);

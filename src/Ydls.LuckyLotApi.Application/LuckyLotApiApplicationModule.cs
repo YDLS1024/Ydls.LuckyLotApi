@@ -18,9 +18,15 @@ namespace Ydls.LuckyLotApi;
     typeof(AbpIdentityApplicationModule),
     typeof(AbpAccountApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
+    typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpMapperlyModule)
     )]
 public class LuckyLotApiApplicationModule : AbpModule
 {
-
+    public override void ConfigureServices(ServiceConfigurationContext context)
+    {
+        context.Services.AddSingleton<NumberThreeMapper>();
+        context.Services.AddSingleton<ExpertsMapper>();
+        context.Services.AddSingleton<KillNumbersMapper>();
+    }
 }

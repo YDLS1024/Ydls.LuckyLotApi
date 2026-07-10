@@ -8,6 +8,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Ydls.LuckyLotApi</RootNamespace>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <UserSecretsId>ydls-luckylotapi-httpapi-host</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Ydls.LuckyLotApi.HttpApi.Host' " />
